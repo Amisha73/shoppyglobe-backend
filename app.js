@@ -12,18 +12,17 @@ const cartRoutes = require("./routes/cartRoutes");
 const app = express();
 app.use(bodyParser.json());
 
-mongoose.connect("mongodb://localhost:27017/shoppyglobe");
-
-const db = mongoose.connection;
-db.on("open", ()=>{
-    console.log("Connected to MongoDB");
-});
-db.on("error",()=>{
-    console.log("Error connecting to MongoDB");
-})
+mongoose
+  .connect("mongodb://localhost:27017/shoppyglobe")
+  .then(() => {
+    console.log("MongoDB connected successfully!");
+  })
+  .catch((err) => {
+    console.error("MongoDB connection error:", err);
+  });
 
 // Routes
-app.use("/auth",authRoutes);
+app.use("/auth", authRoutes);
 app.use("/products", productRoutes);
 app.use("/cart", cartRoutes);
 
