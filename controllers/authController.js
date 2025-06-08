@@ -89,7 +89,7 @@ exports.loginUser = async (req, res) => {
     };
     // Generate JWT token
     const token = jwt.sign(payload, process.env.JWT_SECRET, {
-      expiresIn: "2h",
+      expiresIn: "1h",
     });
 
     res.status(200).json({
