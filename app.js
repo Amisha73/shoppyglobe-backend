@@ -13,7 +13,7 @@ const app = express();
 app.use(bodyParser.json());
 
 mongoose
-  .connect("mongodb://localhost:27017/shoppyglobe")
+  .connect(process.env.MONGODB_URL)
   .then(() => {
     console.log("MongoDB connected successfully!");
   })
