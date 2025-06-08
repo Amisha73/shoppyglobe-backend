@@ -1,5 +1,6 @@
 const Product = require('../models/Product');
 
+// Get all products
 exports.getProducts = async (req, res) => {
   try {
     const products = await Product.find();
@@ -9,6 +10,7 @@ exports.getProducts = async (req, res) => {
   }
 };
 
+// Get a product by ID
 exports.getProductById = async (req, res) => {
   try {
     const product = await Product.findById(req.params.id);
@@ -19,7 +21,7 @@ exports.getProductById = async (req, res) => {
   }
 };
 
-
+// Add a new product
 exports.addProduct = async (req, res) => {
   try {
     const { name, description, inStock, price } = req.body;
@@ -31,12 +33,51 @@ exports.addProduct = async (req, res) => {
       name,
       description: description || '',
       price,
-      stock: inStock,
+      inStock, 
     });
     const savedProduct = await product.save();
     res.status(201).json(savedProduct);
   } catch (error) {
     console.error('Error adding product:', error);
     res.status(500).json({ message: 'Internal server error adding product' });
+  }
+};
+
+// Update an existing product
+exports.updateProduct = async (req, res) => {
+  const { id } = req.params; // Get the product ID from the request parameters
+  const { name, description, inStock, price } = req.body;
+
+  try {
+    const product = await Product.findById(id);
+    if (!product) return res.status(404).json({ message: 'Product not found' });
+
+    // Update product fields
+    if (name) product.name = name;
+    if (description) product.description = description;
+    if (typeof inStock === 'number') product.inStock = inStock; 
+    if (typeof price === 'number') product.price = price; 
+
+    const updatedProduct = await product.save();
+    res.json(updatedProduct);
+  } catch (error) {
+    console.error('Error updating product:', error);
+    res.status(500).json({ message: 'Internal server error updating product' });
+  }
+};
+
+// Delete a product
+exports.deleteProduct = async (req, res) => {
+  const { id } = req.params; // Get the product ID from the request parameters
+
+  try {
+    const product = await Product.findById(id);
+    if (!product) return res.status(404).json({ message: 'Product not found' });
+
+    await product.remove(); // Remove the product from the database
+    res.status(204).send(); // No content to send back
+  } catch (error) {
+    console.error('Error deleting product:', error);
+    res.status(500).json({ message: 'Internal server error deleting product' });
   }
 };
