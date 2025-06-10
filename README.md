@@ -71,5 +71,5 @@ ShoppyGlobe is an e-commerce application backend built using Node.js, Express.js
 
 2. To start application : 
    - install node package manager -- `npm i`
-   - .env file contain -- `MONGODB_URL`, `PORT` & `JWT_SECRET`
+   - .env file contain -- `MONGODB_URL`, `PORT` & `JWT_SECRET` 
    - start application -- `npm start`
