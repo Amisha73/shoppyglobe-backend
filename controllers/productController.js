@@ -71,13 +71,13 @@ exports.deleteProduct = async (req, res) => {
   const { id } = req.params; // Get the product ID from the request parameters
 
   try {
-    const product = await Product.findById(id);
+    const product = await Product.findByIdAndDelete(id); // Find and delete the product
     if (!product) return res.status(404).json({ message: 'Product not found' });
 
-    await product.remove(); // Remove the product from the database
     res.status(204).send(); // No content to send back
   } catch (error) {
     console.error('Error deleting product:', error);
     res.status(500).json({ message: 'Internal server error deleting product' });
   }
 };
+

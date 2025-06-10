@@ -26,11 +26,13 @@ const addToCart = async (req, res) => {
     }
 
     const existingItem = cart.items.find(item => item.productId.toString() === productId);
-    if (existingItem) {
-      existingItem.quantity += quantity; // Update quantity if already in cart
-    } else {
-      cart.items.push({ productId, quantity }); // Add new item to cart
-    }
+if (existingItem) {
+  // Convert both quantities to numbers before adding to prevent string concatenation
+  existingItem.quantity = Number(existingItem.quantity) + Number(quantity);
+} else {
+  cart.items.push({ productId, quantity: Number(quantity) }); //Add to cart
+}
+
 
     await cart.save(); // Save the cart to the Cart model
     res.status(200).json(cart.items); // Return the updated cart items
