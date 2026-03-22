@@ -13,19 +13,9 @@ const app = express();
 app.use(bodyParser.json());
 
 // database connection
-mongoose
-  .connect(process.env.MONGODB_URL,{
-    useNewUrlParser : true,
-    useUnifiedTopology : true,
-}).then(() =>{
-    console.log("Db is connected successfully");
-}).catch((error) =>{
-    console.log("Db is not Connected");
-    console.error(error);
-    process.exit(1);
-});
-// mongoose.connect('mongodb://mongodb:27017/my_database');
-// console.log()
+database = require("./config/database");
+
+database;
 
 // Routes
 app.use("/auth", authRoutes);
