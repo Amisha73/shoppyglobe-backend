@@ -67,9 +67,49 @@ ShoppyGlobe is an e-commerce application backend built using Node.js, Express.js
 ## Installation
 1. Clone the repository:
    ```bash
-   git clone https://github.com/Amisha73/shoppyglobe-backend
+   git clone https://github.com/Amisha73/shoppyglobe-backend.git
+   cd shoppyglobe-backend
+   ```
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Create a `.env` file with:
+   ```env
+   MONGODB_URL=mongodb://localhost:27017/shoppyglobe
+   PORT=3000
+   JWT_SECRET=your_jwt_secret
+   ```
+4. Start locally:
+   ```bash
+   npm start
+   ```
 
-2. To start application : 
-   - install node package manager -- `npm i`
-   - .env file contain -- `MONGODB_URL`, `PORT` & `JWT_SECRET` 
-   - start application -- `npm start`
+## Docker
+1. Build the Docker image:
+   ```bash
+   docker build -t shoppyglobe-backend .
+   ```
+2. Run the container:
+   ```bash
+   docker run -d --name shoppyglobe -p 3000:3000 \
+     -e MONGODB_URL="mongodb://host.docker.internal:27017/shoppyglobe" \
+     -e PORT=3000 \
+     -e JWT_SECRET=your_jwt_secret \
+     shoppyglobe-backend
+   ```
+3. Access API: `http://localhost:3000`
+
+## Docker Compose
+1. Ensure `docker-compose.yml` has the `app` and `mongo` services (updated in this repo).
+2. Start with:
+   ```bash
+   docker compose up --build
+   ```
+3. Stop:
+   ```bash
+   docker compose down
+   ```
+
+## Usage
+- Open `http://localhost:3000` and use the API endpoints documented above.
