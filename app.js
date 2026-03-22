@@ -13,14 +13,9 @@ const app = express();
 app.use(bodyParser.json());
 
 // database connection
-mongoose
-  .connect(process.env.MONGODB_URL)
-  .then(() => {
-    console.log("MongoDB connected successfully!");
-  })
-  .catch((err) => {
-    console.error("MongoDB connection error:", err);
-  });
+database = require("./config/database");
+
+database;
 
 // Routes
 app.use("/auth", authRoutes);
