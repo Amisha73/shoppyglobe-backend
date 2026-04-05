@@ -1,23 +1,73 @@
-services:
-  app:
-    build: .
-    ports:
-      - "3000:3000"
-    environment:
-      - MONGODB_URL=mongodb://mongo:27017/shoppyglobe
-      - PORT=3000
-      - JWT_SECRET=your_jwt_secret
-    depends_on:
-      - mongo
+version: "3.8"
 
+services:
   mongo:
-    image: mongo:latest
+    image: mongo
+    container_name: mongo
     ports:
       - "27017:27017"
-    environment:
-      - MONGO_INITDB_DATABASE=shoppyglobe
     volumes:
       - mongo-data:/data/db
+    networks:
+      - shoppyglobeWeb
+
+  app:
+    build: .
+    container_name: node-app
+    ports:
+      - "5000:5000"
+    depends_on:
+      - mongo
+    environment:
+      - MONGODB_URL=mongodb://mongo:27017/shoppyglobe
+      - PORT=5000
+    networks:
+      - shoppyglobeWeb
+
+  jenkins:
+    image: jenkins/jenkins:lts
+    container_name: jenkins
+    ports:
+      - "8080:8080"   # Jenkins UI
+      - "50000:50000" # Jenkins agent
+    volumes:
+      - jenkins-data:/var/jenkins_home
+    restart: unless-stopped
+
+networks:
+  shoppyglobeWeb:
+    driver: bridge
 
 volumes:
   mongo-data:
+
+  jenkins-data:  
+  
+
+
+
+
+
+# services:
+#   app:
+#     build: .
+#     ports:
+#       - "3000:3000"
+#     environment:
+#       - MONGODB_URL=mongodb://mongo:27017/shoppyglobe
+#       - PORT=3000
+#       - JWT_SECRET=your_jwt_secret
+#     depends_on:
+#       - mongo
+
+#   mongo:
+#     image: mongo:latest
+#     ports:
+#       - "27017:27017"
+#     environment:
+#       - MONGO_INITDB_DATABASE=shoppyglobe
+#     volumes:
+#       - mongo-data:/data/db
+
+# volumes:
+#   mongo-data:
